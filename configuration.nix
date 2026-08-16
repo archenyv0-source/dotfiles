@@ -28,19 +28,27 @@
   nix-homebrew = {
     enable = true;
     inherit user;
+    # This Mac already had a hand-installed Homebrew in /opt/homebrew. Let
+    # nix-homebrew take that prefix over on the first switch, keeping the
+    # packages already installed there.
+    autoMigrate = true;
   };
   homebrew = {
     enable = true;
-    onActivation.cleanup = "none"; # "zap" remove anything not listed here
+    onActivation.cleanup = "zap"; # "zap" remove anything not listed here
     onActivation.autoUpdate = true;
     onActivation.extraFlags = [ "--force" ];
     brews = [
       "herdr"
-      "opensuperwhisper"
+      "hermes-agent"
+      "node"
     ];
     casks = [
       "wezterm"
       "claude-code"
+      "codex"
+      "devin-desktop"
+      "opensuperwhisper"
     ];
   };
 }
