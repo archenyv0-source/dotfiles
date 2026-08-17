@@ -39,6 +39,7 @@
     onActivation.autoUpdate = true;
     onActivation.extraFlags = [ "--force" ];
     brews = [
+      "gh"
       "herdr"
       "hermes-agent"
       "node"
