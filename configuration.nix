@@ -27,17 +27,33 @@
 
     # App preferences that have no dedicated nix-darwin option.
     CustomUserPreferences = {
-      # OpenSuperWhisper: toggle dictation with Right Command on its own,
-      # instead of the stock Option+backtick. This is a "modifier-only"
-      # hotkey, and the app fires it on ANY press of that key, with no
-      # check for other keys held down. So Right Command stops working as
-      # an ordinary modifier: right-handed Cmd-C or Cmd-Tab will start
-      # recording. Pick a modifier you never otherwise press, or switch
-      # back to a regular shortcut in the app's settings.
-      # Valid values: none, leftCommand, rightCommand, leftOption,
-      # rightOption, leftShift, rightShift, leftControl, rightControl, fn.
+      # OpenSuperWhisper: toggle dictation with Cmd+/ instead of the stock
+      # Option+backtick.
+      #
+      # modifierOnlyHotkey must stay "none": any other value makes the app
+      # watch for a bare modifier press and ignore the shortcut below.
+      # That mode also fires on ANY press of the chosen key, so binding it
+      # to a real modifier breaks that key for ordinary use.
+      #
+      # Caveat on a fresh machine: OnboardingViewModel.init overwrites
+      # "none" with "rightOption" whenever hasCompletedOnboarding is still
+      # false, so this setting only sticks once onboarding has been
+      # finished. Pick the "key combination" option there, not Right
+      # Option, or the app keeps ignoring the shortcut below.
+      #
+      # The shortcut cannot be pinned to the *right* Command key. The app
+      # encodes modifiers through NSEvent.ModifierFlags, which has no
+      # left/right distinction, so either Command key triggers it.
+      #
+      # The value is what the KeyboardShortcuts library persists: a JSON
+      # string under "KeyboardShortcuts_<name>". 44 is kVK_ANSI_Slash and
+      # 256 is cmdKey (1 << cmdKeyBit), both from Carbon Events.h.
       "ru.starmel.OpenSuperWhisper" = {
-        modifierOnlyHotkey = "rightCommand";
+        modifierOnlyHotkey = "none";
+        KeyboardShortcuts_toggleRecord = builtins.toJSON {
+          carbonKeyCode = 44;
+          carbonModifiers = 256;
+        };
       };
     };
   };
