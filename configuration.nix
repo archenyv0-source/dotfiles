@@ -24,6 +24,22 @@
     finder.FXPreferredViewStyle = "Nlsv";  # list view by default
     finder.CreateDesktop = false;          # clean desktop
     trackpad.Clicking = true;              # tap to click
+
+    # App preferences that have no dedicated nix-darwin option.
+    CustomUserPreferences = {
+      # OpenSuperWhisper: toggle dictation with Right Command on its own,
+      # instead of the stock Option+backtick. This is a "modifier-only"
+      # hotkey, and the app fires it on ANY press of that key, with no
+      # check for other keys held down. So Right Command stops working as
+      # an ordinary modifier: right-handed Cmd-C or Cmd-Tab will start
+      # recording. Pick a modifier you never otherwise press, or switch
+      # back to a regular shortcut in the app's settings.
+      # Valid values: none, leftCommand, rightCommand, leftOption,
+      # rightOption, leftShift, rightShift, leftControl, rightControl, fn.
+      "ru.starmel.OpenSuperWhisper" = {
+        modifierOnlyHotkey = "rightCommand";
+      };
+    };
   };
   nix-homebrew = {
     enable = true;
