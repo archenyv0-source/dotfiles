@@ -28,6 +28,15 @@ in
     syntaxHighlighting.enable = true;  # commands turn green when valid
     initContent = ''
       bindkey '^f' autosuggest-accept
+
+      # Carried over from the hand-written ~/.zshrc this config replaces.
+      # Order matters: .bun/bin ahead of .local/bin, matching the old file.
+      # The ruby exports that used to live here pointed at
+      # /opt/homebrew/opt/ruby, which the Homebrew "zap" cleanup removed,
+      # so they are dropped rather than migrated.
+      export BUN_INSTALL="$HOME/.bun"
+      export PATH="$BUN_INSTALL/bin:$HOME/.local/bin:$PATH"
+      [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
     '';
     shellAliases = {
       ".." = "cd ..";
